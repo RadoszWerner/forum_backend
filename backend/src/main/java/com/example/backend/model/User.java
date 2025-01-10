@@ -21,4 +21,52 @@ public class User {
     private Boolean isModerator;
 
     // Gettery i Settery
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getPasswdHash() {
+        return passwdHash;
+    }
+
+    public void setPasswdHash(String passwdHash) {
+        this.passwdHash = passwdHash;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public Boolean getIsModerator() {
+        return isModerator;
+    }
+
+    public void setIsModerator(Boolean moderator) {
+        isModerator = moderator;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
 }
