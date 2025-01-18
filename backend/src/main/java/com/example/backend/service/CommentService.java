@@ -1,9 +1,11 @@
 package com.example.backend.service;
 
 import com.example.backend.model.Comment;
+import com.example.backend.model.DeletedComment;
 import com.example.backend.model.Post;
 import com.example.backend.model.User;
 import com.example.backend.repository.CommentRepository;
+import com.example.backend.repository.DeletedCommentRepository;
 import com.example.backend.repository.PostRepository;
 import com.example.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -16,12 +18,15 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final ToxicityCheckService toxicityCheckService;
+    private final DeletedCommentRepository deletedCommentRepository;
 
-
-    public CommentService(CommentRepository commentRepository, UserRepository userRepository, PostRepository postRepository) {
+    public CommentService(CommentRepository commentRepository, UserRepository userRepository, PostRepository postRepository, ToxicityCheckService toxicityCheckService, DeletedCommentRepository deletedCommentRepository) {
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
         this.postRepository = postRepository;
+        this.toxicityCheckService = toxicityCheckService;
+        this.deletedCommentRepository = deletedCommentRepository;
     }
 
     public Comment addComment(String username, Long postId, String content) {
@@ -39,7 +44,30 @@ public class CommentService {
         comment.setPost(post);
         comment.setContent(content);
         comment.setCreatedAt(LocalDateTime.now());
+        comment.setDeleted(false);
+        comment.setToxic(false);
 
+        // Check if the content is toxic
+        if (toxicityCheckService.isToxic(content)) {
+            // Set flags for the comment
+            comment.setToxic(true);
+            comment.setDeleted(true);
+
+            // Save the comment in the comments table
+            Comment savedComment = commentRepository.save(comment);
+
+            // Save the comment in the deleted_comments table
+            DeletedComment deletedComment = new DeletedComment();
+            deletedComment.setComment(savedComment);
+            deletedComment.setModeratedBy(user);
+            deletedComment.setDeletedAt(LocalDateTime.now());
+            deletedComment.setReason("Comment marked as toxic");
+            deletedCommentRepository.save(deletedComment);
+
+            return savedComment;
+        }
+
+        // Save the comment if it's not toxic
         return commentRepository.save(comment);
     }
 
