@@ -87,4 +87,18 @@ public class CommentService {
 
         return commentRepository.save(comment);
     }
+
+    public void deleteComment(Long commentId, String username) {
+        // Find the comment by ID
+        var comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
+
+        // Check if the username matches the comment owner
+        if (!comment.getUser().getUsername().equals(username)) {
+            throw new IllegalArgumentException("User is not authorized to delete this comment");
+        }
+
+        // Delete the comment
+        commentRepository.delete(comment);
+    }
 }

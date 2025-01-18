@@ -44,5 +44,18 @@ public class CommentController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteComment(@RequestBody Map<String, Object> payload) {
+        try {
+            Long commentId = Long.valueOf(payload.get("commentId").toString());
+            String username = (String) payload.get("username");
+
+            commentService.deleteComment(commentId, username);
+            return ResponseEntity.ok("Comment deleted successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
 
