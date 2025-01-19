@@ -51,4 +51,18 @@ public class PostService {
 
         return postRepository.save(post);
     }
+
+    public void deletePost(Long postId, String username) {
+        // Find the post by ID
+        var post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Post not found"));
+
+        // Check if the username matches the post owner
+        if (!post.getUser().getUsername().equals(username)) {
+            throw new IllegalArgumentException("User is not authorized to delete this post");
+        }
+
+        // Delete the post
+        postRepository.delete(post);
+    }
 }

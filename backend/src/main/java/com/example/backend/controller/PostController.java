@@ -45,4 +45,17 @@ public class PostController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deletePost(@RequestBody Map<String, Object> payload) {
+        try {
+            Long postId = Long.valueOf(payload.get("postId").toString());
+            String username = (String) payload.get("username");
+
+            postService.deletePost(postId, username);
+            return ResponseEntity.ok("Post deleted successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
