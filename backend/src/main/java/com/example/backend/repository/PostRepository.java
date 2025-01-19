@@ -10,4 +10,5 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByUserId(Long userId); // Pobieranie postów danego użytkownika
     List<Post> findByTitleContaining(String keyword); // Wyszukiwanie postów po tytule
+    List<Post> findAllByUserId(Long userId);
 }

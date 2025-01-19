@@ -58,7 +58,7 @@ public class UserController {
                     payload.get("username"),
                     payload.get("password")
             );
-            String token = jwtService.generateToken(user.getUsername());
+            String token = jwtService.generateToken(user.getUsername(), user.getId());
             return ResponseEntity.ok(Map.of("message", "Login successful!", "token", token));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(Map.of(

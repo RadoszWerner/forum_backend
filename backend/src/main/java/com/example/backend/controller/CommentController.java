@@ -5,6 +5,7 @@ import com.example.backend.service.CommentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -53,6 +54,16 @@ public class CommentController {
 
             commentService.deleteComment(commentId, username);
             return ResponseEntity.ok("Comment deleted successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/post/{postId}")
+    public ResponseEntity<?> getCommentsByPostId(@PathVariable Long postId) {
+        try {
+            List<Comment> comments = commentService.getCommentsByPostId(postId);
+            return ResponseEntity.ok(comments);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
