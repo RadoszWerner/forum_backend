@@ -9,5 +9,8 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByPostId(Long postId); // Pobieranie komentarzy dla danego postu
+
     List<Comment> findByUserId(Long userId); // Pobieranie komentarzy danego użytkownika
+
+    List<Comment> findByIsDeletedTrue();
 }

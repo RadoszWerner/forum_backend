@@ -68,5 +68,21 @@ public class CommentController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/deleted")
+    public ResponseEntity<List<Comment>> getDeletedComments() {
+        List<Comment> deletedComments = commentService.getDeletedComments();
+        return ResponseEntity.ok(deletedComments);
+    }
+
+    @PutMapping("/restore/{id}")
+    public ResponseEntity<String> restoreDeletedComment(@PathVariable Long id) {
+        try {
+            Comment restoredComment = commentService.restoreDeletedComment(id);
+            return ResponseEntity.ok("Comment restored successfully: " + restoredComment.getId());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
 

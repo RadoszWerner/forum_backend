@@ -106,4 +106,17 @@ public class CommentService {
     public List<Comment> getCommentsByPostId(Long postId) {
         return commentRepository.findByPostId(postId);
     }
+
+    public List<Comment> getDeletedComments() {
+        return commentRepository.findByIsDeletedTrue();
+    }
+
+    public Comment restoreDeletedComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
+
+        // Update the `is_deleted` flag to false
+        comment.setIsDeleted(false);
+        return commentRepository.save(comment);
+    }
 }
