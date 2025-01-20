@@ -19,10 +19,12 @@ public class JWTService {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    public String generateToken(String username, Long userId) {
+    public String generateToken(String username, Long userId, boolean isModerator) {
+        String role = isModerator ? "moderator" : "user";
         return Jwts.builder()
                 .setSubject(username)
                 .claim("userId", userId)
+                .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 godzin
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
