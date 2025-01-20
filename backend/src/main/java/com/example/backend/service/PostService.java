@@ -7,6 +7,7 @@ import com.example.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class PostService {
@@ -64,5 +65,21 @@ public class PostService {
 
         // Delete the post
         postRepository.delete(post);
+    }
+
+    public List<Post> getAllPosts() {
+        return postRepository.findAll();
+    }
+
+    public Post getPostById(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Post not found with ID: " + id));
+    }
+
+    public List<Post> getPostsByUserId(Long userId) {
+        if (userId == null) {
+            throw new IllegalArgumentException("User ID cannot be null");
+        }
+        return postRepository.findAllByUserId(userId);
     }
 }
