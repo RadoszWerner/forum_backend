@@ -1,7 +1,9 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.UserRegistrationRequest;
 import com.example.backend.model.User;
 import com.example.backend.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,12 +23,12 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<String> registerUser(@Valid @RequestBody UserRegistrationRequest request) {
         try {
             userService.registerUser(
-                    payload.get("username"),
-                    payload.get("email"),
-                    payload.get("password")
+                    request.getUsername(),
+                    request.getEmail(),
+                    request.getPassword()
             );
             return ResponseEntity.ok("User registered successfully!");
         } catch (IllegalArgumentException e) {
