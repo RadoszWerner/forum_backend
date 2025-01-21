@@ -75,14 +75,17 @@ public class CommentController {
         return ResponseEntity.ok(deletedComments);
     }
 
-    @PutMapping("/restore/{id}")
-    public ResponseEntity<String> restoreDeletedComment(@PathVariable Long id) {
+    @PutMapping("/restore")
+    public ResponseEntity<String> restoreComment(@RequestBody Map<String, Long> payload) {
         try {
-            Comment restoredComment = commentService.restoreDeletedComment(id);
-            return ResponseEntity.ok("Comment restored successfully: " + restoredComment.getId());
+            Long commentId = payload.get("commentId");
+            commentService.restoreDeletedComment(commentId);
+            System.out.println(commentId);
+            return ResponseEntity.ok("Comment restored successfully");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 }
 

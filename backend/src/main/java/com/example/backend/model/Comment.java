@@ -99,6 +99,4 @@ public class Comment {
         isToxic = toxic;
     }
 
-    public void setIsDeleted(boolean b) {
-    }
 }
