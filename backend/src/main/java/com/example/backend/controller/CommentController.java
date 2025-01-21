@@ -1,5 +1,7 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.CommentDTO;
+import com.example.backend.mapper.CommentMapper;
 import com.example.backend.model.Comment;
 import com.example.backend.service.CommentService;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/comments")
@@ -60,12 +63,15 @@ public class CommentController {
     }
 
     @GetMapping("/post/{postId}")
-    public ResponseEntity<?> getCommentsByPostId(@PathVariable Long postId) {
+    public ResponseEntity<List<CommentDTO>> getCommentsByPostId(@PathVariable Long postId) {
         try {
             List<Comment> comments = commentService.getCommentsByPostId(postId);
-            return ResponseEntity.ok(comments);
+            List<CommentDTO> commentDTOs = comments.stream()
+                    .map(CommentMapper::mapToCommentDTO) // Map each comment to CommentDTO
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(commentDTOs);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
     }
 

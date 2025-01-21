@@ -1,5 +1,7 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.PostDTO;
+import com.example.backend.mapper.PostMapper;
 import com.example.backend.model.Post;
 import com.example.backend.model.User;
 import com.example.backend.repository.PostRepository;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -67,10 +70,6 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
-    }
-
     public Post getPostById(Long id) {
         return postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Post not found with ID: " + id));
@@ -81,5 +80,12 @@ public class PostService {
             throw new IllegalArgumentException("User ID cannot be null");
         }
         return postRepository.findAllByUserId(userId);
+    }
+
+    public List<PostDTO> getAllPosts() {
+        List<Post> posts = postRepository.findAll();
+        return posts.stream()
+                .map(PostMapper::mapToPostDTO) // Use the mapper here
+                .collect(Collectors.toList());
     }
 }

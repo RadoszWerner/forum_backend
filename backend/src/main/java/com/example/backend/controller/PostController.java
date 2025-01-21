@@ -1,5 +1,7 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.PostDTO;
+import com.example.backend.mapper.PostMapper;
 import com.example.backend.model.Post;
 import com.example.backend.service.PostService;
 import org.springframework.http.ResponseEntity;
@@ -61,25 +63,28 @@ public class PostController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Post>> getAllPosts() {
+    public ResponseEntity<List<PostDTO>> getAllPosts() {
         System.out.println("Received request to fetch all posts");
         try {
-            List<Post> posts = postService.getAllPosts();
+            List<PostDTO> posts = postService.getAllPosts();
             return ResponseEntity.ok(posts);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 
+
     @GetMapping("/{id}")
-    public ResponseEntity<Post> getPostById(@PathVariable Long id) {
+    public ResponseEntity<PostDTO> getPostById(@PathVariable Long id) {
         try {
             Post post = postService.getPostById(id);
-            return ResponseEntity.ok(post);
+            PostDTO postDTO = PostMapper.mapToPostDTO(post); // Map entity to DTO
+            return ResponseEntity.ok(postDTO);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         }
     }
+
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Post>> getPostsByUserId(@PathVariable Long userId) {

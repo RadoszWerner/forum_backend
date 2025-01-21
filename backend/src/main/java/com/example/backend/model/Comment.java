@@ -83,7 +83,7 @@ public class Comment {
         this.updatedAt = updatedAt;
     }
 
-    public boolean isDeleted() {
+    public boolean getIsDeleted() {
         return isDeleted;
     }
 
@@ -91,7 +91,7 @@ public class Comment {
         isDeleted = deleted;
     }
 
-    public boolean isToxic() {
+    public boolean getIsToxic() {
         return isToxic;
     }
 
@@ -101,4 +101,5 @@ public class Comment {
 
     public void setIsDeleted(boolean b) {
     }
+
 }
