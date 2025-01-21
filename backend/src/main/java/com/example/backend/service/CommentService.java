@@ -115,8 +115,8 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
 
-        // Update the `is_deleted` flag to false
-        comment.setIsDeleted(false);
+        comment.setDeleted(false);
+        comment.setToxic(false);
         return commentRepository.save(comment);
     }
 }

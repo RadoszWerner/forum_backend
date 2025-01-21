@@ -43,6 +43,7 @@ public class ToxicityCheckService {
             }
 
             List<Integer> toxicityScores = (List<Integer>) responseBody.get("toxicity_score");
+            System.out.println(toxicityScores);
             for (int score : toxicityScores) {
                 if (score > 0) {
                     return true;
