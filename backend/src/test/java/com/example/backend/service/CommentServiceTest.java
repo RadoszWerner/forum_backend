@@ -97,8 +97,8 @@ class CommentServiceTest {
         when(toxicityCheckService.isToxic("Toxic comment")).thenReturn(true);
         when(commentRepository.save(any(Comment.class))).thenAnswer(invocation -> {
             Comment savedComment = invocation.getArgument(0);
-            assertTrue(savedComment.isToxic()); // Verify that the toxic flag is set
-            assertTrue(savedComment.isDeleted()); // Verify that the deleted flag is set
+            assertTrue(savedComment.getIsToxic()); // Verify that the toxic flag is set
+            assertTrue(savedComment.getIsDeleted()); // Verify that the deleted flag is set
             return savedComment;
         });
 
@@ -107,8 +107,8 @@ class CommentServiceTest {
 
         // Assert
         assertNotNull(result);
-        assertTrue(result.isDeleted());
-        assertTrue(result.isToxic());
+        assertTrue(result.getIsDeleted());
+        assertTrue(result.getIsToxic());
         verify(deletedCommentRepository, times(1)).save(any(DeletedComment.class));
     }
 

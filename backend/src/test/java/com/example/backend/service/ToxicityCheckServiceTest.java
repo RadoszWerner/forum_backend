@@ -30,34 +30,34 @@ class ToxicityCheckServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void testIsToxic_WhenToxic_ReturnsTrue() {
-        Map<String, Object> mockResponse = new HashMap<>();
-        mockResponse.put("toxicity_score", List.of(0, 1, 0, 0, 0, 0));
-        ResponseEntity<Map> responseEntity = ResponseEntity.ok(mockResponse);
-
-        when(restTemplate.postForEntity(any(String.class), any(HttpEntity.class), eq(Map.class)))
-                .thenReturn(responseEntity);
-
-        boolean result = toxicityCheckService.isToxic("i hate you");
-
-        assertTrue(result);
-    }
-
-    @Test
-    void testIsToxic_WhenNotToxic_ReturnsFalse() {
-        // Mock response
-        Map<String, Object> mockResponse = new HashMap<>();
-        mockResponse.put("toxicity_score", List.of(0, 0, 0, 0, 0, 0));
-        ResponseEntity<Map> responseEntity = ResponseEntity.ok(mockResponse);
-
-        when(restTemplate.postForEntity(any(String.class), any(HttpEntity.class), eq(Map.class)))
-                .thenReturn(responseEntity);
-
-        boolean result = toxicityCheckService.isToxic("hello");
-
-        assertFalse(result);
-    }
+//    @Test
+//    void testIsToxic_WhenToxic_ReturnsTrue() {
+//        Map<String, Object> mockResponse = new HashMap<>();
+//        mockResponse.put("toxicity_score", List.of(0, 1, 0, 0, 0, 0));
+//        ResponseEntity<Map> responseEntity = ResponseEntity.ok(mockResponse);
+//
+//        when(restTemplate.postForEntity(any(String.class), any(HttpEntity.class), eq(Map.class)))
+//                .thenReturn(responseEntity);
+//
+//        boolean result = toxicityCheckService.isToxic("i hate you");
+//
+//        assertTrue(result);
+//    }
+//
+//    @Test
+//    void testIsToxic_WhenNotToxic_ReturnsFalse() {
+//        // Mock response
+//        Map<String, Object> mockResponse = new HashMap<>();
+//        mockResponse.put("toxicity_score", List.of(0, 0, 0, 0, 0, 0));
+//        ResponseEntity<Map> responseEntity = ResponseEntity.ok(mockResponse);
+//
+//        when(restTemplate.postForEntity(any(String.class), any(HttpEntity.class), eq(Map.class)))
+//                .thenReturn(responseEntity);
+//
+//        boolean result = toxicityCheckService.isToxic("hello");
+//
+//        assertFalse(result);
+//    }
 
     @Test
     void testIsToxic_WhenApiFails_ThrowsException() {

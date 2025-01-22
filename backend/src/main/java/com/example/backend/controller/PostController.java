@@ -28,6 +28,8 @@ public class PostController {
             String content = payload.get("content");
 
             Post post = postService.createPost(username, title, content);
+            System.out.println("Payload: " + payload);
+            System.out.println("Post ID: " + post.getId());
             return ResponseEntity.ok("Post created successfully with ID: " + post.getId());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
